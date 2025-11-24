@@ -10,22 +10,21 @@ dataset:
   num_users: 1156  # max_user + 1
 
 model:
-  d_model: 112
+  d_model: 120
+  num_layers: 2
   num_heads: 4
-  num_layers: 3
-  dim_feedforward: 224
-  dropout: 0.15
-  max_seq_len: 200
+  dropout: 0.35
 
 training:
-  batch_size: 256
-  learning_rate: 0.001
-  weight_decay: 0.00001
+  batch_size: 128
+  learning_rate: 0.0008
+  weight_decay: 0.00015
   num_epochs: 100
-  early_stopping_patience: 20
-  scheduler_patience: 5
+  early_stopping_patience: 30
+  scheduler_patience: 10
   num_workers: 2
   checkpoint_dir: "checkpoints/diy"
+  label_smoothing: 0.03
 
 device: "cuda"
 seed: 42

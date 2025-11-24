@@ -10,21 +10,22 @@ dataset:
   num_users: 46  # max_user + 1
 
 model:
-  d_model: 104
+  d_model: 80
   num_layers: 2
   num_heads: 4
-  dropout: 0.35
+  dim_ff: 160
+  dropout: 0.25
 
 training:
-  batch_size: 96
-  learning_rate: 0.0015
-  weight_decay: 0.0005
+  batch_size: 80
+  learning_rate: 0.0012
+  weight_decay: 0.0001
   num_epochs: 200
   early_stopping_patience: 40
-  scheduler_patience: 10
+  scheduler_patience: 12
   num_workers: 2
   checkpoint_dir: "checkpoints/geolife"
-  label_smoothing: 0.2
+  label_smoothing: 0.05
 
 device: "cuda"
 seed: 42

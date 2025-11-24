@@ -10,6 +10,7 @@ import numpy as np
 import os
 import json
 from pathlib import Path
+from collections import Counter
 
 from ..utils.metrics import calculate_correct_total_prediction, get_performance_dict
 
@@ -33,8 +34,32 @@ class Trainer:
         self.config = config
         self.device = device
         
-        # Loss function with label smoothing
+        # Compute class weights (inverse frequency)
+        print("Computing class weights...")
+        all_targets = []
+        for batch in train_loader:
+            all_targets.extend(batch['target'].numpy().tolist())
+        
+        target_counts = Counter(all_targets)
+        num_classes = config.get('num_classes', max(target_counts.keys()) + 1)
+        
+        # Compute inverse frequency weights
+        class_weights = torch.ones(num_classes)
+        total_samples = len(all_targets)
+        for cls, count in target_counts.items():
+            # Softer weighting: sqrt of inverse frequency
+            class_weights[cls] = (total_samples / count) ** 0.5
+        
+        # Normalize weights
+        class_weights = class_weights / class_weights.mean()
+        
+        print(f"Weight range: [{class_weights.min():.2f}, {class_weights.max():.2f}]")
+        print(f"Most common class weight: {class_weights[max(target_counts, key=target_counts.get)]:.2f}")
+        print(f"Least common class weight: {class_weights[min(target_counts, key=target_counts.get)]:.2f}")
+        
+        # Loss function with class weights
         self.criterion = nn.CrossEntropyLoss(
+            weight=class_weights.to(device),
             label_smoothing=config.get('label_smoothing', 0.0)
         )
         

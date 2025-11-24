@@ -14,7 +14,7 @@ import sys
 sys.path.insert(0, str(Path(__file__).parent))
 
 from src.data.dataset_v2 import create_dataloaders
-from src.models.simple_model import create_model
+from src.models.advanced_model import create_model
 from src.utils.trainer import Trainer
 
 
@@ -103,7 +103,8 @@ def main():
     # Create trainer
     trainer_config = {
         **config['training'],
-        'checkpoint_dir': config['training']['checkpoint_dir']
+        'checkpoint_dir': config['training']['checkpoint_dir'],
+        'num_classes': config['dataset']['num_locations']
     }
     
     trainer = Trainer(
