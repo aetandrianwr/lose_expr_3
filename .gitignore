@@ -1,1 +1,10 @@
 *.pk
+__pycache__/
+*.py[cod]
+checkpoints/*.pt
+checkpoints/*/*.pt
+*.pth
+.ipynb_checkpoints/
+logs/
+*.log
+.DS_Store

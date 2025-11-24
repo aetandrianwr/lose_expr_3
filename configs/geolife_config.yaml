@@ -1,0 +1,30 @@
+# Geolife Configuration
+# Target: <500K params, >40% Acc@1
+
+dataset:
+  name: "geolife"
+  train_path: "data/geolife/geolife_transformer_7_train.pk"
+  val_path: "data/geolife/geolife_transformer_7_validation.pk"
+  test_path: "data/geolife/geolife_transformer_7_test.pk"
+  num_locations: 1187  # max_id + 1
+  num_users: 46  # max_user + 1
+
+model:
+  d_model: 104
+  num_layers: 2
+  num_heads: 4
+  dropout: 0.35
+
+training:
+  batch_size: 96
+  learning_rate: 0.0015
+  weight_decay: 0.0005
+  num_epochs: 200
+  early_stopping_patience: 40
+  scheduler_patience: 10
+  num_workers: 2
+  checkpoint_dir: "checkpoints/geolife"
+  label_smoothing: 0.2
+
+device: "cuda"
+seed: 42
